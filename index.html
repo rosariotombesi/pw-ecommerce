@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VerdeVivo | Plantas y Deco</title>
+</head>
+<body>
+
+  <header>
+    <h1>VerdeVivo</h1>
+
+    <nav aria-label="Navegación principal">
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#productos">Productos</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <form role="search" aria-label="Buscar productos">
+      <label for="busqueda">Buscar producto</label>
+      <input type="search" id="busqueda" name="busqueda" placeholder="Ej: maceta" />
+      <button type="submit">Buscar</button>
+    </form>
+  </header>
+
+  <main id="inicio">
+    <section aria-labelledby="bienvenida">
+      <h2 id="bienvenida">Plantas y deco para tu hogar</h2>
+      <p>Descubrí una selección de plantas, macetas, velas y cuadros para transformar tus espacios.</p>
+      <a href="#productos">Ver catálogo</a>
+    </section>
+
+    <section id="productos" aria-labelledby="titulo-productos">
+      <h2 id="titulo-productos">Productos destacados</h2>
+
+      <article>
+        <figure>
+          <img src="https://via.placeholder.com/250x180" alt="Planta monstera en maceta blanca" loading="lazy" />
+          <figcaption>Monstera deliciosa</figcaption>
+        </figure>
+        <h3>Monstera deliciosa</h3>
+        <p>$12.000</p>
+        <p>Planta de interior ideal para aportar frescura y color.</p>
+        <button type="button" aria-label="Agregar Monstera deliciosa al carrito">Agregar al carrito</button>
+      </article>
+
+      <article>
+        <figure>
+          <img src="https://via.placeholder.com/250x180" alt="Vela aromática de soja en frasco de vidrio" loading="lazy" />
+          <figcaption>Vela aromática</figcaption>
+        </figure>
+        <h3>Vela de soja vainilla</h3>
+        <p>$4.500</p>
+        <p>Vela decorativa con aroma suave para living o dormitorio.</p>
+        <button type="button" aria-label="Agregar Vela de soja vainilla al carrito">Agregar al carrito</button>
+      </article>
+
+      <article>
+        <figure>
+          <img src="https://via.placeholder.com/250x180" alt="Cuadro botánico con hojas verdes" loading="lazy" />
+          <figcaption>Cuadro botánico</figcaption>
+        </figure>
+        <h3>Cuadro botánico</h3>
+        <p>$8.900</p>
+        <p>Lámina decorativa inspirada en la naturaleza para espacios interiores.</p>
+        <button type="button" aria-label="Agregar Cuadro botánico al carrito">Agregar al carrito</button>
+      </article>
+    </section>
+
+    <aside>
+      <h2>Categorías</h2>
+      <ul>
+        <li>Plantas</li>
+        <li>Macetas</li>
+        <li>Velas</li>
+        <li>Cuadros</li>
+      </ul>
+    </aside>
+  </main>
+
+  <footer id="contacto">
+    <h2>Contacto</h2>
+    <p>Email: contacto@verdevivo.com</p>
+    <p>Instagram: @verdevivo</p>
+    <p>&copy; 2026 VerdeVivo</p>
+  </footer>
+
+</body>
+</html>
