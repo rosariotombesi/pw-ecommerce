@@ -36,7 +36,6 @@ function renderizarProductos(listaProductos) {
       <article>
         <figure>
           <img src="${producto.imagen}" alt="${producto.alt}">
-          <figcaption>${producto.nombre}</figcaption>
         </figure>
         <h3>${producto.nombre}</h3>
         <p>$${producto.precio}</p>
