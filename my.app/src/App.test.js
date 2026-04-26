@@ -1,8 +1,12 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen } from "@testing-library/react";
+import App from "./App";
 
-test('renders learn react link', () => {
+test("renderiza la seccion principal de Verdant", () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(
+    screen.getByRole("heading", { name: /plantas y macetas para tu hogar/i })
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole("button", { name: /buscar/i })
+  ).toBeInTheDocument();
 });
