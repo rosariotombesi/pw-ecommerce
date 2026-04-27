@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 function ProductCard({ producto, onAgregar }) {
   return (
     <article className="product-card">
       <Link
-        to={`/producto/${producto.id}`}
+        href={`/producto/${producto.id}`}
         className="product-card-link"
         aria-label={`Ver mas informacion de ${producto.nombre}`}
       >
