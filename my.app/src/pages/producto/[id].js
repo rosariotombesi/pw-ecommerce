@@ -1,14 +1,21 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import productos from "../../data/productos";
 
-function ProductoPage({ agregarAlCarrito }) {
+function ProductoPage({ productos, productosCargando, agregarAlCarrito }) {
   const router = useRouter();
-  const producto = productos.find((item) => item.id === router.query.id);
+  const producto = productos.find(
+    (item) => String(item.id) === String(router.query.id)
+  );
 
   if (!producto) {
-    return null;
+    return (
+      <p className="empty-state">
+        {!router.isReady || productosCargando
+          ? "Cargando producto..."
+          : "No encontramos el producto solicitado."}
+      </p>
+    );
   }
 
   return (
@@ -48,7 +55,7 @@ function ProductoPage({ agregarAlCarrito }) {
                 <strong>Tamanio:</strong> {producto.tamanio}
               </p>
               <p>
-                <strong>Estado:</strong> {producto.stock}
+                <strong>Estado:</strong> {producto.estado}
               </p>
             </div>
 

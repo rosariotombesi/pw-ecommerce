@@ -1,6 +1,6 @@
 import ProductCard from "../components/ProductCard";
 
-function HomePage({ productosFiltrados, agregarAlCarrito }) {
+function HomePage({ productosCargando, productosFiltrados, agregarAlCarrito }) {
   return (
     <>
       <section id="inicio" className="hero" aria-labelledby="bienvenida">
@@ -32,7 +32,9 @@ function HomePage({ productosFiltrados, agregarAlCarrito }) {
           <p>Selecciona un producto para ver su ficha completa.</p>
         </div>
 
-        {productosFiltrados.length > 0 ? (
+        {productosCargando ? (
+          <p className="empty-state">Cargando productos...</p>
+        ) : productosFiltrados.length > 0 ? (
           <div className="products-grid">
             {productosFiltrados.map((producto) => (
               <ProductCard

@@ -1,4 +1,12 @@
-function Carrito({ carrito, onEliminar, abierto, onToggle, totalItems }) {
+function Carrito({
+  carrito,
+  onEliminar,
+  abierto,
+  onToggle,
+  totalItems,
+  onComprar,
+  comprando,
+}) {
   const totalPrecio = carrito.reduce(
     (acc, item) => acc + item.precio * item.cantidad,
     0
@@ -59,6 +67,14 @@ function Carrito({ carrito, onEliminar, abierto, onToggle, totalItems }) {
               <p className="cart-total">
                 Total: ${totalPrecio.toLocaleString("es-AR")}
               </p>
+              <button
+                type="button"
+                className="cart-checkout-button"
+                onClick={onComprar}
+                disabled={comprando}
+              >
+                {comprando ? "Procesando..." : "Crear orden"}
+              </button>
             </>
           ) : (
             <p className="cart-empty">Tu carrito esta vacio.</p>

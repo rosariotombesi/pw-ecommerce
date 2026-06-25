@@ -1,7 +1,9 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { supabase } from "../lib/supabase";
+import { fetchApi } from "../lib/apiClient";
 import Carrito from "./Carrito";
 
 function AppLayout({
@@ -11,9 +13,53 @@ function AppLayout({
   manejarSubmit,
   carrito,
   eliminarDelCarrito,
+  crearOrden,
+  ordenProcesando,
 }) {
   const router = useRouter();
   const [carritoAbierto, setCarritoAbierto] = useState(false);
+  const [usuario, setUsuario] = useState(null);
+  const [rol, setRol] = useState(null);
+
+  useEffect(() => {
+    const cargarUsuario = async () => {
+      const { data } = await supabase.auth.getUser();
+      setUsuario(data.user);
+
+      if (data.user) {
+        const perfil = await fetchApi("/api/auth/rol");
+        setRol(perfil.rol);
+      } else {
+        setRol(null);
+      }
+    };
+
+    cargarUsuario();
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        setUsuario(session?.user ?? null);
+
+        if (session?.user) {
+          const perfil = await fetchApi("/api/auth/rol");
+          setRol(perfil.rol);
+        } else {
+          setRol(null);
+        }
+      }
+    );
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, []);
+
+  const cerrarSesion = async () => {
+    await supabase.auth.signOut();
+    setUsuario(null);
+    setRol(null);
+    router.push("/");
+  };
 
   const totalItems = useMemo(
     () => carrito.reduce((acc, item) => acc + item.cantidad, 0),
@@ -60,11 +106,45 @@ function AppLayout({
                   abierto={carritoAbierto}
                   onToggle={() => setCarritoAbierto((prev) => !prev)}
                   totalItems={totalItems}
+                  onComprar={crearOrden}
+                  comprando={ordenProcesando}
                 />
               </li>
               <li>
                 <a href={contactoHref}>Contacto</a>
               </li>
+              {usuario ? (
+                <li>
+                  <Link href="/ordenes">Ordenes</Link>
+                </li>
+              ) : null}
+              {rol === "admin" ? (
+                <li>
+                  <Link href="/admin/ventas">Reporte</Link>
+                </li>
+              ) : null}
+
+              {usuario ? (
+                <>
+                  <li>
+                    <span>{usuario.email}</span>
+                  </li>
+                  <li>
+                    <button type="button" onClick={cerrarSesion}>
+                      Cerrar sesion
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <Link href="/auth/login">Login</Link>
+                  </li>
+                  <li>
+                    <Link href="/auth/register">Registro</Link>
+                  </li>
+                </>
+              )}
             </ul>
           </nav>
 
