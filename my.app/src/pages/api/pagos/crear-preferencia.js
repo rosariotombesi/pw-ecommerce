@@ -85,7 +85,7 @@ export default async function handler(req, res) {
         pending: `${appUrl}/pago-pendiente?orden_id=${orden.id}`,
       },
       external_reference: String(orden.id),
-      notification_url: `${appUrl}/api/pagos/webhook`,
+      notification_url: `${appUrl}/api/webhooks/mercado-pago`,
       metadata: {
         orden_id: orden.id,
         usuario_id: user.id,
@@ -121,7 +121,7 @@ export default async function handler(req, res) {
       sandboxInitPoint: preferencia.sandbox_init_point,
       productionInitPoint: preferencia.init_point,
       paymentUrl: preferencia.init_point || preferencia.sandbox_init_point,
-      webhookUrl: `${appUrl}/api/pagos/webhook`,
+      webhookUrl: `${appUrl}/api/webhooks/mercado-pago`,
       message: "Preferencia creada. Redirigiendo a Mercado Pago.",
     });
   } catch (error) {
