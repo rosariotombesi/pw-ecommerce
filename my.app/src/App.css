@@ -548,9 +548,13 @@
 .checkout-summary,
 .checkout-payment {
   padding: 20px;
-  border-radius: 12px;
+  border-radius: 8px;
   background: #fff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.checkout-summary {
+  border-left: 6px solid #3498db;
 }
 
 .checkout-summary h2,
@@ -568,6 +572,16 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 12px;
+  border: 1px solid #d8decf;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.payment-methods label:hover {
+  border-color: #3498db;
+  background: #f7fbff;
 }
 
 .payment-method-disabled {
@@ -576,6 +590,19 @@
 
 .checkout-security {
   color: #4f5d3f;
+}
+
+.checkout-payment button {
+  width: 100%;
+  margin-top: 8px;
+  background: #27ae60;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.checkout-payment button:disabled {
+  background: #b8b8b8;
+  cursor: not-allowed;
 }
 
 .checkout-row {

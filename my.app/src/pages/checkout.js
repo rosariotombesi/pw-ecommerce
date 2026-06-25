@@ -43,7 +43,13 @@ function CheckoutPage() {
           orden_id: orden.id,
         }),
       });
+
+      if (!data.paymentUrl) {
+        throw new Error("Mercado Pago no devolvio una URL de pago");
+      }
+
       setPreferencia(data);
+      window.location.href = data.paymentUrl;
     } catch (err) {
       setError(err.message);
     } finally {

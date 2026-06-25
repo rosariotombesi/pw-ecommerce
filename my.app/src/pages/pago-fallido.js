@@ -1,9 +1,15 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+function valorValido(valor) {
+  return valor && valor !== "null" ? valor : null;
+}
+
 function PagoFallidoPage() {
   const router = useRouter();
-  const ordenId = router.query.external_reference || router.query.orden_id;
+  const ordenId = valorValido(router.query.external_reference) || valorValido(router.query.orden_id);
+  const paymentId = valorValido(router.query.payment_id) || valorValido(router.query.collection_id);
+  const estado = valorValido(router.query.status) || valorValido(router.query.collection_status) || "rejected";
 
   return (
     <section className="payment-status payment-status-failure">
@@ -13,9 +19,9 @@ function PagoFallidoPage() {
         insuficientes, tarjeta rechazada o cancelacion del pago.
       </p>
       <div className="payment-status-data">
-        {router.query.payment_id ? <p>Pago: {router.query.payment_id}</p> : null}
+        {paymentId ? <p>Pago: {paymentId}</p> : <p>Pago no aprobado</p>}
         {ordenId ? <p>Orden: #{ordenId}</p> : null}
-        {router.query.status ? <p>Estado: {router.query.status}</p> : null}
+        <p>Estado: {estado}</p>
       </div>
       <div className="payment-status-actions">
         {ordenId ? <Link href={`/checkout?ordenId=${ordenId}`}>Reintentar pago</Link> : null}
