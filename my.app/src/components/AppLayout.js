@@ -1,6 +1,5 @@
-import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { fetchApi } from "../lib/apiClient";
@@ -17,7 +16,10 @@ function AppLayout({
   ordenProcesando,
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [carritoAbierto, setCarritoAbierto] = useState(false);
+  const [menuAbierto, setMenuAbierto] = useState(false);
+  const [productosMenuAbierto, setProductosMenuAbierto] = useState(false);
   const [usuario, setUsuario] = useState(null);
   const [rol, setRol] = useState(null);
 
@@ -61,28 +63,25 @@ function AppLayout({
     router.push("/");
   };
 
+  const manejarCrearOrden = async () => {
+    const ordenCreada = await crearOrden();
+
+    if (ordenCreada) {
+      setCarritoAbierto(false);
+    }
+  };
+
   const totalItems = useMemo(
     () => carrito.reduce((acc, item) => acc + item.cantidad, 0),
     [carrito]
   );
 
-  const estaEnInicio = router.pathname === "/";
+  const estaEnInicio = pathname === "/";
   const inicioHref = estaEnInicio ? "#inicio" : "/";
-  const productosHref = estaEnInicio ? "#productos" : "/#productos";
   const contactoHref = estaEnInicio ? "#contacto" : "/#contacto";
 
   return (
     <div className="app-shell">
-      <Head>
-        <title>Verdant | Plantas y Deco</title>
-        <meta
-          name="description"
-          content="Verdant, tienda de plantas y macetas para transformar tus espacios."
-        />
-        <link rel="icon" type="image/png" href="/Logo verdant .png" />
-        <link rel="apple-touch-icon" href="/Logo verdant .png" />
-      </Head>
-
       <header className="site-header">
         <div className="brand">
           <Link href="/" aria-label="Ir al inicio de Verdant">
@@ -91,13 +90,38 @@ function AppLayout({
         </div>
 
         <div className="header-content">
-          <nav aria-label="Navegacion principal">
+          <nav aria-label="Navegación principal">
             <ul className="nav-list">
               <li>
                 <a href={inicioHref}>Inicio</a>
               </li>
-              <li>
-                <a href={productosHref}>Productos</a>
+              <li className="nav-menu-item">
+                <button
+                  type="button"
+                  className="menu-toggle menu-toggle-plain"
+                  aria-expanded={productosMenuAbierto}
+                  aria-controls="menu-productos"
+                  onClick={() => setProductosMenuAbierto((prev) => !prev)}
+                >
+                  Productos
+                </button>
+
+                {productosMenuAbierto ? (
+                  <div id="menu-productos" className="menu-panel products-menu-panel">
+                    <Link
+                      href="/productos/plantas"
+                      onClick={() => setProductosMenuAbierto(false)}
+                    >
+                      Plantas
+                    </Link>
+                    <Link
+                      href="/productos/macetas"
+                      onClick={() => setProductosMenuAbierto(false)}
+                    >
+                      Macetas
+                    </Link>
+                  </div>
+                ) : null}
               </li>
               <li className="nav-cart-item">
                 <Carrito
@@ -106,45 +130,67 @@ function AppLayout({
                   abierto={carritoAbierto}
                   onToggle={() => setCarritoAbierto((prev) => !prev)}
                   totalItems={totalItems}
-                  onComprar={crearOrden}
+                  onComprar={manejarCrearOrden}
                   comprando={ordenProcesando}
                 />
               </li>
-              <li>
-                <a href={contactoHref}>Contacto</a>
-              </li>
-              {usuario ? (
-                <li>
-                  <Link href="/ordenes">Ordenes</Link>
-                </li>
-              ) : null}
-              {rol === "admin" ? (
-                <li>
-                  <Link href="/admin/ventas">Reporte</Link>
-                </li>
-              ) : null}
+              <li className="nav-menu-item">
+                <button
+                  type="button"
+                  className="menu-toggle"
+                  aria-expanded={menuAbierto}
+                  aria-controls="menu-cuenta"
+                  onClick={() => setMenuAbierto((prev) => !prev)}
+                >
+                  Menú
+                </button>
 
-              {usuario ? (
-                <>
-                  <li>
-                    <span>{usuario.email}</span>
-                  </li>
-                  <li>
-                    <button type="button" onClick={cerrarSesion}>
-                      Cerrar sesion
-                    </button>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li>
-                    <Link href="/auth/login">Login</Link>
-                  </li>
-                  <li>
-                    <Link href="/auth/register">Registro</Link>
-                  </li>
-                </>
-              )}
+                {menuAbierto ? (
+                  <div id="menu-cuenta" className="menu-panel">
+                    <a href={contactoHref} onClick={() => setMenuAbierto(false)}>
+                      Contacto
+                    </a>
+
+                    {usuario ? (
+                      <>
+                        <Link
+                          href="/ordenes"
+                          onClick={() => setMenuAbierto(false)}
+                        >
+                          Órdenes
+                        </Link>
+                        {rol === "admin" ? (
+                          <Link
+                            href="/admin/ventas"
+                            onClick={() => setMenuAbierto(false)}
+                          >
+                            Reporte
+                          </Link>
+                        ) : null}
+                        <span className="menu-email">{usuario.email}</span>
+                        <button type="button" onClick={cerrarSesion}>
+                          Cerrar sesión
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <Link
+                          href="/auth/login"
+                          onClick={() => setMenuAbierto(false)}
+                        >
+                          Login
+                        </Link>
+                        <Link
+                          href="/auth/register"
+                          onClick={() => setMenuAbierto(false)}
+                        >
+                          Registro
+                        </Link>
+                      </>
+                    )}
+                  </div>
+                ) : null}
+              </li>
             </ul>
           </nav>
 

@@ -42,9 +42,14 @@ function Carrito({
             <>
               <ul className="cart-list">
                 {carrito.map((producto) => (
-                  <li key={producto.id} className="cart-item">
+                  <li key={producto.cartItemId || producto.id} className="cart-item">
                     <div>
                       <p className="cart-item-name">{producto.nombre}</p>
+                      {producto.varianteDescripcion ? (
+                        <p className="cart-item-meta">
+                          {producto.varianteDescripcion}
+                        </p>
+                      ) : null}
                       <p className="cart-item-meta">
                         Cantidad: {producto.cantidad} | $
                         {(producto.precio * producto.cantidad).toLocaleString(
@@ -56,7 +61,7 @@ function Carrito({
                     <button
                       type="button"
                       className="cart-remove-button"
-                      onClick={() => onEliminar(producto.id)}
+                      onClick={() => onEliminar(producto)}
                     >
                       Eliminar
                     </button>
@@ -77,7 +82,7 @@ function Carrito({
               </button>
             </>
           ) : (
-            <p className="cart-empty">Tu carrito esta vacio.</p>
+            <p className="cart-empty">Tu carrito está vacío.</p>
           )}
         </section>
       ) : null}
