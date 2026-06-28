@@ -4,10 +4,10 @@ Estas pruebas sirven para verificar que las API Routes validan datos en servidor
 
 ## Obtener un token
 
-La forma mas simple es iniciar sesion en la web, abrir DevTools > Network,
-crear una orden o cargar ordenes y usar "Copy as cURL" sobre la request.
+La forma más simple es iniciar sesión en la web, abrir DevTools > Network,
+crear una orden o cargar órdenes y usar "Copy as cURL" sobre la request.
 
-Tambien podes copiar el valor del header:
+También podés copiar el valor del header:
 
 ```text
 Authorization: Bearer TU_ACCESS_TOKEN
@@ -31,7 +31,7 @@ curl -i http://localhost:3000/api/productos
 
 ## Agregar al carrito
 
-Debe responder `201 Created` si el token es valido y hay stock.
+Debe responder `201 Created` si el token es válido y hay stock.
 
 ```powershell
 curl -i -X POST http://localhost:3000/api/carrito `
@@ -40,7 +40,7 @@ curl -i -X POST http://localhost:3000/api/carrito `
   -d "{\"producto_id\":1,\"cantidad\":1}"
 ```
 
-## Intentar cantidad invalida
+## Intentar cantidad inválida
 
 Debe responder `400 Bad Request`.
 
@@ -63,7 +63,7 @@ curl -i -X POST http://localhost:3000/api/ordenes `
 
 ## Ver historial
 
-Debe responder solo las ordenes del usuario autenticado.
+Debe responder solo las órdenes del usuario autenticado.
 
 ```powershell
 curl -i http://localhost:3000/api/ordenes `
@@ -79,7 +79,7 @@ curl -i http://localhost:3000/api/ordenes/1 `
 
 ## Reporte admin
 
-Requiere que el email del usuario este en `SUPABASE_ADMIN_EMAILS`.
+Requiere que el email del usuario esté en `SUPABASE_ADMIN_EMAILS`.
 
 ```powershell
 curl -i http://localhost:3000/api/admin/ventas `

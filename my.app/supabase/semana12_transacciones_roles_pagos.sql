@@ -69,11 +69,11 @@ declare
   v_total_calculado numeric := 0;
 begin
   if p_usuario_id is null then
-    raise exception 'Usuario invalido';
+    raise exception 'Usuario inválido';
   end if;
 
   if p_items is null or jsonb_array_length(p_items) = 0 then
-    raise exception 'El carrito esta vacio';
+    raise exception 'El carrito está vacío';
   end if;
 
   for v_item in select * from jsonb_array_elements(p_items)
@@ -82,7 +82,7 @@ begin
     v_cantidad := (v_item ->> 'cantidad')::integer;
 
     if v_producto_id is null or v_cantidad is null or v_cantidad <= 0 then
-      raise exception 'Item invalido';
+      raise exception 'Ítem inválido';
     end if;
 
     select id, nombre, precio, stock
@@ -103,7 +103,7 @@ begin
   end loop;
 
   if v_total_calculado <> p_total then
-    raise exception 'Total invalido';
+    raise exception 'Total inválido';
   end if;
 
   insert into public.ordenes (usuario_id, total, estado)

@@ -25,11 +25,11 @@ export async function fetchApi(path, options = {}) {
     : null;
 
   if (!response.ok) {
-    throw new Error(result?.error || "La API no devolvio una respuesta valida");
+    throw new Error(result?.error || "La API no devolvió una respuesta válida");
   }
 
   if (!result) {
-    throw new Error("La API no devolvio una respuesta valida");
+    throw new Error("La API no devolvió una respuesta válida");
   }
 
   return result.data;
